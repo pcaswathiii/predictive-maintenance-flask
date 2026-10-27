@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+{% set m = info.final_model_metrics %}
+<h3 class="mb-3">Dashboard</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4"><div class="card card-body text-center"><div class="text-muted">Machines in dataset</div><h3>{{ info.dataset_stats.rows }}</h3></div></div>
+  <div class="col-md-4"><div class="card card-body text-center"><div class="text-muted">Failure rate</div><h3>{{ "%.2f"|format(info.dataset_stats.failure_rate * 100) }}%</h3></div></div>
+  <div class="col-md-4"><div class="card card-body text-center"><div class="text-muted">Decision threshold</div><h3>{{ info.threshold }}</h3></div></div>
+</div>
+
+<h5>Final model: Random Forest (test set)</h5>
+<div class="row g-3 mb-4">
+  <div class="col"><div class="card card-body text-center"><div class="text-muted">Precision</div><h4>{{ "%.3f"|format(m.precision) }}</h4></div></div>
+  <div class="col"><div class="card card-body text-center"><div class="text-muted">Recall</div><h4>{{ "%.3f"|format(m.recall) }}</h4></div></div>
+  <div class="col"><div class="card card-body text-center"><div class="text-muted">F1</div><h4>{{ "%.3f"|format(m.f1) }}</h4></div></div>
+  <div class="col"><div class="card card-body text-center"><div class="text-muted">ROC-AUC</div><h4>{{ "%.3f"|format(m.roc_auc) }}</h4></div></div>
+  <div class="col"><div class="card card-body text-center"><div class="text-muted">PR-AUC</div><h4>{{ "%.3f"|format(m.pr_auc) }}</h4></div></div>
+</div>
+
+<h5>Confusion matrix</h5>
+<table class="table table-bordered w-auto bg-white mb-4">
+  <tr><th></th><th>Predicted OK</th><th>Predicted failure</th></tr>
+  <tr><th>Actually OK</th><td>{{ m.confusion_matrix[0][0] }}</td><td>{{ m.confusion_matrix[0][1] }} (false alarms)</td></tr>
+  <tr><th>Actually failed</th><td>{{ m.confusion_matrix[1][0] }} (missed)</td><td>{{ m.confusion_matrix[1][1] }}</td></tr>
+</table>
+
+<h5>Model comparison (test set, threshold 0.5)</h5>
+<table class="table table-striped bg-white">
+  <thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th><th>PR-AUC</th></tr></thead>
+  <tbody>
+  {% for r in info.model_comparison %}
+    <tr>
+      <td>{{ r["Model"] }}</td>
+      <td>{{ r["Accuracy"] }}</td><td>{{ r["Precision"] }}</td><td>{{ r["Recall"] }}</td>
+      <td>{{ r["F1"] }}</td><td>{{ r["ROC-AUC"] }}</td><td>{{ r["PR-AUC"] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

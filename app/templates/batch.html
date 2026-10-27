@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-3">Batch prediction</h3>
+
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+<div class="card card-body shadow-sm">
+  <p>Upload a CSV file with these columns:</p>
+  <p><code>Type, Air temperature [K], Process temperature [K], Rotational speed [rpm], Torque [Nm], Tool wear [min]</code></p>
+  <form method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv" class="form-control mb-3" required>
+    <button class="btn btn-primary" type="submit">Upload and predict</button>
+  </form>
+</div>
+{% endblock %}

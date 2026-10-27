@@ -1,0 +1,73 @@
+{
+  "threshold": 0.15,
+  "feature_columns": [
+    "Type",
+    "Air temperature [K]",
+    "Process temperature [K]",
+    "Rotational speed [rpm]",
+    "Torque [Nm]",
+    "Tool wear [min]",
+    "temp_diff",
+    "power_W",
+    "torque_wear"
+  ],
+  "model_comparison": [
+    {
+      "Model": "Logistic Regression",
+      "Accuracy": 0.85,
+      "Precision": 0.17,
+      "Recall": 0.882,
+      "F1": 0.285,
+      "ROC-AUC": 0.931,
+      "PR-AUC": 0.44
+    },
+    {
+      "Model": "Decision Tree",
+      "Accuracy": 0.948,
+      "Precision": 0.391,
+      "Recall": 0.926,
+      "F1": 0.55,
+      "ROC-AUC": 0.956,
+      "PR-AUC": 0.876
+    },
+    {
+      "Model": "Random Forest",
+      "Accuracy": 0.992,
+      "Precision": 0.933,
+      "Recall": 0.824,
+      "F1": 0.875,
+      "ROC-AUC": 0.97,
+      "PR-AUC": 0.862
+    },
+    {
+      "Model": "ANN",
+      "Accuracy": 0.982,
+      "Precision": 0.746,
+      "Recall": 0.735,
+      "F1": 0.741,
+      "ROC-AUC": 0.98,
+      "PR-AUC": 0.821
+    }
+  ],
+  "final_model_metrics": {
+    "precision": 0.44525547445255476,
+    "recall": 0.8970588235294118,
+    "f1": 0.5951219512195122,
+    "roc_auc": 0.9700934721714772,
+    "pr_auc": 0.8621515560193936,
+    "confusion_matrix": [
+      [
+        1856,
+        76
+      ],
+      [
+        7,
+        61
+      ]
+    ]
+  },
+  "dataset_stats": {
+    "rows": 10000,
+    "failure_rate": 0.0339
+  }
+}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-3">Predict machine failure risk</h3>
+
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+{% if result %}
+  <div class="alert {% if result.risk == 'High' %}alert-danger{% elif result.risk == 'Medium' %}alert-warning{% else %}alert-success{% endif %}">
+    <h5 class="mb-1">Predicted class: {{ "Failure likely" if result.failure else "No failure expected" }}</h5>
+    Failure probability: <strong>{{ result.probability }}%</strong> &nbsp;|&nbsp; Risk category: <strong>{{ result.risk }}</strong>
+  </div>
+{% endif %}
+
+<form method="post" class="card card-body shadow-sm">
+  <div class="row g-3">
+    <div class="col-md-4">
+      <label class="form-label">Product type</label>
+      <select name="type" class="form-select" required>
+        <option value="">Choose...</option>
+        {% for t in ["L", "M", "H"] %}
+          <option value="{{ t }}" {% if request.form.get('type') == t %}selected{% endif %}>{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Air temperature [K]</label>
+      <input type="number" step="any" name="air_temp" class="form-control" value="{{ request.form.get('air_temp', '') }}" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Process temperature [K]</label>
+      <input type="number" step="any" name="process_temp" class="form-control" value="{{ request.form.get('process_temp', '') }}" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Rotational speed [rpm]</label>
+      <input type="number" step="any" name="rpm" class="form-control" value="{{ request.form.get('rpm', '') }}" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Torque [Nm]</label>
+      <input type="number" step="any" name="torque" class="form-control" value="{{ request.form.get('torque', '') }}" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Tool wear [min]</label>
+      <input type="number" step="any" name="tool_wear" class="form-control" value="{{ request.form.get('tool_wear', '') }}" required>
+    </div>
+  </div>
+  <button class="btn btn-primary mt-3" type="submit">Predict</button>
+</form>
+{% endblock %}
